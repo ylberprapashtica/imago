@@ -1,23 +1,27 @@
 #!/bin/bash
 
-# Function to check if a command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
-}
+# Install PHP and required extensions
+echo "Installing PHP and extensions..."
+apt-get update && apt-get install -y \
+    php8.2 \
+    php8.2-cli \
+    php8.2-common \
+    php8.2-curl \
+    php8.2-mbstring \
+    php8.2-xml \
+    php8.2-zip \
+    php8.2-pgsql \
+    php8.2-pdo-pgsql
 
-# Wait for PHP and Composer to be available
-echo "Waiting for PHP and Composer to be available..."
-for i in {1..30}; do
-    if command_exists php && command_exists composer; then
-        break
-    fi
-    sleep 1
-done
+# Install Composer
+echo "Installing Composer..."
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
 
-if ! command_exists php || ! command_exists composer; then
-    echo "Error: PHP or Composer not found after waiting"
-    exit 1
-fi
+# Verify installations
+echo "Verifying installations..."
+php -v
+composer -V
 
 # Install PHP dependencies
 echo "Installing PHP dependencies..."
