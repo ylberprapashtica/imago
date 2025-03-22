@@ -3,7 +3,11 @@
     "builds": [
         {
             "src": "composer.json",
-            "use": "vercel-php"
+            "use": "vercel-php",
+            "config": {
+                "maxExecutionTime": 60,
+                "memoryLimit": "512M"
+            }
         },
         {
             "src": "package.json",
@@ -34,6 +38,20 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://imago-ylberprapashtica-ylberprapashticas-projects.vercel.app"
+        "APP_URL": "https://imago-ylberprapashtica-ylberprapashticas-projects.vercel.app",
+        "PHP_MEMORY_LIMIT": "512M",
+        "PHP_MAX_EXECUTION_TIME": "60",
+        "DB_CONNECTION": "mysql",
+        "DB_HOST": "@db_host",
+        "DB_PORT": "@db_port",
+        "DB_DATABASE": "@db_database",
+        "DB_USERNAME": "@db_username",
+        "DB_PASSWORD": "@db_password",
+        "ELASTICSEARCH_INDEX": "@elasticsearch_index",
+        "ELASTICSEARCH_HOST": "@elasticsearch_host",
+        "ELASTICSEARCH_PORT": "@elasticsearch_port",
+        "ELASTICSEARCH_USERNAME": "@elasticsearch_username",
+        "ELASTICSEARCH_PASSWORD": "@elasticsearch_password",
+        "ELASTICSEARCH_SSL_VERIFY": "@elasticsearch_ssl_verify"
     }
 } 
