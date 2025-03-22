@@ -42,5 +42,6 @@
         "APP_URL": "https://imago-ylberprapashtica-ylberprapashticas-projects.vercel.app",
         "PHP_MEMORY_LIMIT": "512M",
         "PHP_MAX_EXECUTION_TIME": "60"
-    }
+    },
+    "buildCommand": "npm run build"
 } 
