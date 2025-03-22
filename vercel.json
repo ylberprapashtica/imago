@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "composer.json",
+            "use": "vercel-php"
+        },
+        {
+            "src": "package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "public/build"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/assets/(.*)",
+            "dest": "/public/assets/$1"
+        },
+        {
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
+        },
+        {
+            "src": "/storage/(.*)",
+            "dest": "/public/storage/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/public/index.php"
+        }
+    ],
+    "env": {
+        "APP_ENV": "production",
+        "APP_DEBUG": "false"
+    }
+} 
