@@ -3,7 +3,7 @@
     "builds": [
         {
             "src": "composer.json",
-            "use": "@vercel/php",
+            "use": "vercel-php",
             "config": {
                 "maxExecutionTime": 60,
                 "memoryLimit": "512M"
