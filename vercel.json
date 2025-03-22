@@ -7,8 +7,7 @@
             "config": {
                 "maxExecutionTime": 60,
                 "memoryLimit": "512M",
-                "runtime": "8.2",
-                "extensions": ["curl", "pgsql", "pdo_pgsql"]
+                "runtime": "8.2"
             }
         },
         {
@@ -43,7 +42,5 @@
         "APP_URL": "https://imago-ylberprapashtica-ylberprapashticas-projects.vercel.app",
         "PHP_MEMORY_LIMIT": "512M",
         "PHP_MAX_EXECUTION_TIME": "60"
-    },
-    "buildCommand": "bash vercel-build.sh",
-    "installCommand": "curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && composer install --no-dev --optimize-autoloader"
+    }
 } 
