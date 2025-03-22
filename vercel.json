@@ -33,6 +33,7 @@
     ],
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "false"
+        "APP_DEBUG": "false",
+        "APP_URL": "https://imago-ylberprapashtica-ylberprapashticas-projects.vercel.app"
     }
 } 
