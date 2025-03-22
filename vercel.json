@@ -6,7 +6,9 @@
             "use": "vercel-php",
             "config": {
                 "maxExecutionTime": 60,
-                "memoryLimit": "512M"
+                "memoryLimit": "512M",
+                "runtime": "8.2",
+                "extensions": ["curl", "pgsql", "pdo_pgsql"]
             }
         },
         {
