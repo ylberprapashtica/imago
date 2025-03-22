@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d
+        depends_on:
+            - backend
+            - frontend
+        networks:
+            - app-network
+
+    backend:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        volumes:
+            - .:/var/www
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        ports:
+            - "9003:9003"
+        depends_on:
+            - mysql
+            - elasticsearch
+        networks:
+            - app-network
+
+    frontend:
+        build:
+            context: .
+            dockerfile: docker/node/Dockerfile
+        volumes:
+            - .:/app
+            - /app/node_modules
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+            - VITE_APP_URL=http://localhost:8000
+        ports:
+            - "5173:5173"
+        networks:
+            - app-network
+
+    mysql:
+        image: mysql:8.0
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_ROOT_AUTH_METHOD: mysql_native_password
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./docker/mysql:/docker-entrypoint-initdb.d
+            - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+            - mysql-data:/var/lib/mysql
+        networks:
+            - app-network
+        deploy:
+            resources:
+                limits:
+                    memory: 512M
+                reservations:
+                    memory: 256M
+
+    elasticsearch:
+        image: elasticsearch:8.12.2
+        environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        ports:
+            - "9200:9200"
+        volumes:
+            - elasticsearch-data:/usr/share/elasticsearch/data
+        networks:
+            - app-network
+
+    kibana:
+        image: docker.elastic.co/kibana/kibana:8.12.2
+        environment:
+            - ELASTICSEARCH_HOSTS=https://${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}
+            - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+            - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+            - ELASTICSEARCH_SSL_VERIFY=${ELASTICSEARCH_SSL_VERIFY}
+            - XPACK_SECURITY_ENABLED=true
+        ports:
+            - "5601:5601"
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    mysql-data:
+        driver: local
+    elasticsearch-data:
+        driver: local 
